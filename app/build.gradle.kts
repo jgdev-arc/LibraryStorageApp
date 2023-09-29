@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.tlz.librarystorageapp"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.tlz.librarystorageapp"
@@ -75,6 +75,10 @@ dependencies {
     ksp("androidx.room:room-compiler:$room_version")
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation("androidx.room:room-ktx:$room_version")
+
+    // Navigation
+    val nav_version = "2.7.3"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
 
 }
