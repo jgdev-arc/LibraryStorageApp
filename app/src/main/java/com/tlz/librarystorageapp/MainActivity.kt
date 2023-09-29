@@ -3,6 +3,7 @@ package com.tlz.librarystorageapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,7 +94,13 @@ fun MainScreen(viewModel: BookViewModel, navController: NavHostController) {
         mutableStateOf("")
     }
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.padding(top = 22.dp, start = 6.dp, end = 6.dp)
+    
+    ) {
+        
+        Text(text = "Add Books", fontSize = 22.sp)
+        
         OutlinedTextField(
             value = inputBook,
             onValueChange = {
@@ -104,7 +113,9 @@ fun MainScreen(viewModel: BookViewModel, navController: NavHostController) {
         Button(onClick = {
             viewModel.addBook(BookEntity(0, inputBook))
 
-        }) {
+        },
+            colors = ButtonDefaults.buttonColors(Color.Blue)
+        ) {
             Text(text = "Insert Book into database")
         }
 
@@ -120,23 +131,31 @@ fun BookCard(viewModel: BookViewModel, book: BookEntity, navController: NavHostC
         .padding(8.dp)
         .fillMaxWidth()) {
         
-        Row {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+
             Text(text = "" + book.id, fontSize = 24.sp,
-                modifier = Modifier.padding(start = 4.dp, end = 4.dp))
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp),
+                color = Color.Blue
+            )
             
-            Text(text = book.title, fontSize = 24.sp)
-            
-            IconButton(onClick = { viewModel.deleteBook(book = book) }) {
-                Icon(imageVector = Icons.Default.Delete,
-                    contentDescription = "Delete")
-            }
+            Text(text = book.title, fontSize = 24.sp,
+                modifier = Modifier.fillMaxSize(0.7f),
+                color = Color.Black
+            )
+
+            Row(horizontalArrangement = Arrangement.End) {
+                IconButton(onClick = { viewModel.deleteBook(book = book) }) {
+                    Icon(imageVector = Icons.Default.Delete,
+                        contentDescription = "Delete")
+                }
 
 
-            IconButton(onClick = {
-                navController.navigate("UpdateScreen/${book.id}")
-            }) {
-                Icon(imageVector = Icons.Default.Edit,
-                    contentDescription = "Edit")
+                IconButton(onClick = {
+                    navController.navigate("UpdateScreen/${book.id}")
+                }) {
+                    Icon(imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit")
+                }
             }
 
         }
@@ -147,15 +166,22 @@ fun BookCard(viewModel: BookViewModel, book: BookEntity, navController: NavHostC
 fun BooksList(viewModel: BookViewModel, navController: NavHostController) {
 
     val books by viewModel.books.collectAsState(initial = emptyList())
+    
+    Column(Modifier.padding(16.dp)) {
+        
+        Text(text = "My Book Library: ", fontSize = 24.sp, color = Color.Red)
+        
+        LazyColumn() {
+            items(items = books) {
+                    item -> BookCard(
+                viewModel = viewModel,
+                book = item,
+                navController
+            )
+            }
 
-    LazyColumn() {
-        items(items = books) {
-                item -> BookCard(
-            viewModel = viewModel,
-            book = item,
-            navController
-        )
         }
-
     }
+
+    
 }
