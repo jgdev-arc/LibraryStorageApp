@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.tlz.librarystorageapp.room.BookEntity
 import com.tlz.librarystorageapp.viewmodel.BookViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UpdateScreen(viewModel: BookViewModel, bookId: String?) {
+fun UpdateScreen(viewModel: BookViewModel, bookId: String?, navController: NavController) {
 
     var inputBook by remember {
         mutableStateOf("")
@@ -48,6 +49,7 @@ fun UpdateScreen(viewModel: BookViewModel, bookId: String?) {
         Button(onClick = {
             var newBook = BookEntity(bookId!!.toInt(), inputBook)
             viewModel.updateBook(newBook)
+            navController.popBackStack()
         },
             modifier = Modifier.padding(top = 16.dp),
             colors = ButtonDefaults.buttonColors(Color.Red)
