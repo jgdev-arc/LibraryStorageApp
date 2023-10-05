@@ -65,6 +65,7 @@ The Library Storage App uses many popular libraries and tools in the Android Eco
   
 Do Reach Out :
 
+  * [LinkedIn](https://www.linkedin.com/in/jgdev/)
   * [Twitter](https://twitter.com/jon_g_dev)
 
 
